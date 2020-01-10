@@ -1,4 +1,4 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 import java.io.PrintWriter;
 
@@ -11,7 +11,7 @@ public class TimeStampSeries implements StatsInfo
 	    long base; // millis since midnight, Jan 1, 1970 UTC.
 	    long[] timeStamps = new long[GROW_SIZE]; // elapsed millis from base
 
-	    void dump(PrintWriter stream) {
+	    public void dump(PrintWriter stream) {
 	      stream.print("[size=" + count);
 	      for (int i = 0; i < count; i++) {
 	        if (i != 0) {
@@ -24,7 +24,7 @@ public class TimeStampSeries implements StatsInfo
 	      stream.println("]");
 	    }
 
-	    void shrink() {
+	    public void shrink() {
 	      if (count < timeStamps.length) {
 	        long[] tmp = new long[count];
 	        System.arraycopy(timeStamps, 0, tmp, 0, count);
@@ -32,12 +32,12 @@ public class TimeStampSeries implements StatsInfo
 	      }
 	    }
 
-	    TimeStampSeries() {
+	    public TimeStampSeries() {
 	      count = 0;
 	      base = 0;
 	    }
 
-	    void setBase(long base) {
+	    public void setBase(long base) {
 	      this.base = base;
 	    }
 
@@ -45,7 +45,7 @@ public class TimeStampSeries implements StatsInfo
 	      return this.count;
 	    }
 
-	    void addTimeStamp(int ts) {
+	    public void addTimeStamp(int ts) {
 	      if (count >= timeStamps.length) {
 	        long[] tmp = new long[timeStamps.length + GROW_SIZE];
 	        System.arraycopy(timeStamps, 0, tmp, 0, timeStamps.length);

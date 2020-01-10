@@ -1,12 +1,12 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
-class BitNonZeroLongIntInterval extends BitNonZeroInterval {
+class BitNonZeroLongLongInterval extends BitNonZeroInterval {
     long bits;
-    int interval;
+    long interval;
 
     @Override
     int getMemoryUsed() {
-      return super.getMemoryUsed() + 12;
+      return super.getMemoryUsed() + 16;
     }
 
     @Override
@@ -19,7 +19,7 @@ class BitNonZeroLongIntInterval extends BitNonZeroInterval {
       return this.interval;
     }
 
-    BitNonZeroLongIntInterval(long bits, int interval, int count) {
+    BitNonZeroLongLongInterval(long bits, long interval, int count) {
       super(count);
       this.bits = bits;
       this.interval = interval;

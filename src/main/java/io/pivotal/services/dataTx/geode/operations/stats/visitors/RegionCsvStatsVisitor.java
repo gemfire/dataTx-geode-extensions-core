@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceInst;
-import io.pivotal.services.dataTx.geode.operations.stats.StatValue;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceInst;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatValue;
 import nyla.solutions.core.io.csv.CsvWriter;
 import nyla.solutions.core.util.Config;
 

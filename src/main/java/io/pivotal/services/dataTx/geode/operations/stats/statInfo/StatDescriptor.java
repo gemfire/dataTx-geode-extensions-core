@@ -1,4 +1,4 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 import java.io.PrintWriter;
 
@@ -40,7 +40,7 @@ import java.io.PrintWriter;
       return this.loaded;
     }
 
-    void unload() {
+    public void unload() {
       this.loaded = false;
       this.name = null;
       this.units = null;

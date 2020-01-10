@@ -1,5 +1,6 @@
 package io.pivotal.services.dataTx.geode.operations.stats;
 
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ArchiveInfo;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.RegionCsvStatsVisitor;
 import nyla.solutions.core.io.IO;
 import org.junit.Ignore;
@@ -101,14 +102,14 @@ public class GfStatsReaderTest
 		{
 			archiveName = "src/test/resources/stats/rdrlnxm"+i+"-server1.gfs";
 			reader = new GfStatsReader(archiveName);
-			reader.accept(visitor);
+			reader.acceptVisitors(visitor);
 		}
 		
 		for(int i= 48; i <= 55;i++)
 		{
 			archiveName = "src/test/resources/stats/rdrlnxm"+i+"-server1.gfs";
 			reader = new GfStatsReader(archiveName);
-			reader.accept(visitor);
+			reader.acceptVisitors(visitor);
 		}
 		
 		

@@ -1,4 +1,4 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,21 +10,21 @@ import java.util.Set;
 	   * stat values. <p> For now ComboValue has a simple implementation that does
 	   * not suppport updates.
 	   */
-	  class ComboValue extends AbstractValue {
+		public class ComboValue extends AbstractValue {
 	    private final ResourceType type;
 	    private final StatValue[] values;
 
 	    /**
 	     * Creates a ComboValue by adding all the specified values together.
 	     */
-	    ComboValue(List<?> valueList) {
+	    public ComboValue(List<?> valueList) {
 	      this((StatValue[]) valueList.toArray(new StatValue[valueList.size()]));
 	    }
 
 	    /**
 	     * Creates a ComboValue by adding all the specified values together.
 	     */
-	    ComboValue(StatValue[] values) {
+	    public ComboValue(StatValue[] values) {
 	      this.values = values;
 	      this.filter = this.values[0].getFilter();
 	      String typeName = this.values[0].getType().getName();

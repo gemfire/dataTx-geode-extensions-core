@@ -1,10 +1,11 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
+import io.pivotal.services.dataTx.geode.operations.stats.GfStatsReader;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.StatsVisitor;
 
 /**
@@ -126,7 +127,7 @@ public class ArchiveInfo implements StatsInfo
 	      return sw.toString();
 	    }
 
-	    protected void dump(PrintWriter stream) {
+	    public void dump(PrintWriter stream) {
 	      stream.println("archiveVersion=" + archiveVersion);
 	      if (archive != null) {
 	        stream.println("startDate=" + archive.formatTimeMillis(startTimeStamp));

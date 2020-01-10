@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.geode.cache.Declarable;
+import org.apache.geode.cache.EntryNotFoundException;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
@@ -56,27 +57,33 @@ public class ClearRegionFunction implements Function<Object>, Declarable
 		logWriter.warn("Executing "+this.getClass().getName()+"  for region:"+region.getFullPath());
 		
 		Set<Object> keySet = region.keySet();
-		
-		int removeCount = 0;
+
 		
 		if(keySet == null || keySet.isEmpty())
 		{
-			sender.lastResult(removeCount);
+			sender.lastResult(0);
 			return;
 		}
-		
-		//copy key set
-		keySet = new HashSet<Object>(region.keySet());
 
-		for (Object key : keySet)
-		{
-			region.invalidate(key);
-			region.destroy(key);
-			removeCount++;
-		}
-		
-		sender.lastResult(removeCount);
-		
+		int entriesCount = keySet.size();
+
+		final Region<Object,Object> localRegion = region;
+
+		keySet.parallelStream().forEach(key -> {
+
+			try
+			{
+				localRegion.invalidate(key);
+				localRegion.destroy(key);
+			}
+			catch(EntryNotFoundException e)
+			{
+				logWriter.warn("Key:"+key+" ERROR:"+e);
+			}
+		});
+
+		sender.lastResult(entriesCount);
+
 	}// --------------------------------------------------------
 
 	@Override

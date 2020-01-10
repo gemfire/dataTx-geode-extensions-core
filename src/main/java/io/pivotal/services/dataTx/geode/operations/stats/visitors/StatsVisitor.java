@@ -1,10 +1,10 @@
 package io.pivotal.services.dataTx.geode.operations.stats.visitors;
 
-import io.pivotal.services.dataTx.geode.operations.stats.ArchiveInfo;
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceInst;
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceType;
-import io.pivotal.services.dataTx.geode.operations.stats.SimpleValue;
-import io.pivotal.services.dataTx.geode.operations.stats.TimeStampSeries;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ArchiveInfo;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceInst;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceType;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.SimpleValue;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.TimeStampSeries;
 
 public interface StatsVisitor
 {

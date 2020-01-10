@@ -1,10 +1,11 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.pivotal.services.dataTx.geode.operations.stats.GfStatsReader;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.StatsVisitor;
 
 /*
@@ -30,7 +31,7 @@ public class ResourceType implements StatsInfo
 	      }
 	    }
 
-	    protected ResourceType(String name, int statCount) {
+	    public ResourceType(String name, int statCount) {
 	      this.loaded = false;
 	      this.name = name;
 	      this.desc = null;
@@ -38,7 +39,7 @@ public class ResourceType implements StatsInfo
 	      this.descriptorMap = null;
 	    }
 
-	    protected ResourceType(String name, String desc, int statCount) {
+	    public ResourceType(String name, String desc, int statCount) {
 	      this.loaded = true;
 	      this.name = name;
 	      this.desc = desc;
@@ -59,7 +60,7 @@ public class ResourceType implements StatsInfo
 	     * Frees up any resources no longer needed after the archive file is closed.
 	     * Returns true if this guy is no longer needed.
 	     */
-	    protected boolean close() {
+	    public boolean close() {
 	      if (isLoaded()) {
 	        for (int i = 0; i < stats.length; i++) {
 	          if (stats[i] != null) {
@@ -84,10 +85,10 @@ public class ResourceType implements StatsInfo
 	      this.descriptorMap = null;
 	    }
 
-	    protected void addStatDescriptor(GfStatsReader archive, int offset,
-	        String name, boolean isCounter,
-	        boolean largerBetter,
-	        byte typeCode, String units, String desc) {
+	    public void addStatDescriptor(GfStatsReader archive, int offset,
+                                         String name, boolean isCounter,
+                                         boolean largerBetter,
+                                         byte typeCode, String units, String desc) {
 	      StatDescriptor descriptor = new StatDescriptor(name, offset, isCounter,
 	          largerBetter, typeCode, units, desc);
 	      this.stats[offset] = descriptor;

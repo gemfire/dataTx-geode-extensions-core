@@ -59,7 +59,7 @@ public class StatsToCsvApp
 			
 			System.out.println("accepting");
 			GfStatsReader reader = new GfStatsReader(archiveFile.getAbsolutePath());
-			reader.accept(visitor);
+			reader.acceptVisitors(visitor);
 			
 		}
 		catch (IOException e)

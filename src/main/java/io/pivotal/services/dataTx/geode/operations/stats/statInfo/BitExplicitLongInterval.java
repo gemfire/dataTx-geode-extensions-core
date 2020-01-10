@@ -1,4 +1,6 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
+
+import io.pivotal.services.dataTx.geode.operations.stats.GfStatsReader;
 
 import java.io.PrintWriter;
 

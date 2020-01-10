@@ -1,9 +1,12 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
+
+import io.pivotal.services.dataTx.geode.operations.stats.GfStatsReader;
 
 import java.text.NumberFormat;
 import java.util.Date;
 
-abstract class AbstractValue implements StatValue {
+abstract class AbstractValue implements StatValue
+{
 	
 	protected static final NumberFormat nf = NumberFormat.getNumberInstance();
 	 
@@ -150,15 +153,15 @@ abstract class AbstractValue implements StatValue {
             .append("\"");
       }
       result.append(" min=")
-          .append(GfStatsReader.nf.format(min));
+          .append(GfStatsReader.getNumberFormat().format(min));
       result.append(" max=")
-          .append(GfStatsReader.nf.format(max));
+          .append(GfStatsReader.getNumberFormat().format(max));
       result.append(" average=")
-          .append(GfStatsReader.nf.format(avg));
+          .append(GfStatsReader.getNumberFormat().format(avg));
       result.append(" stddev=")
-          .append(GfStatsReader.nf.format(stddev));
+          .append(GfStatsReader.getNumberFormat().format(stddev));
       result.append(" last=") // for bug 42532
-          .append(GfStatsReader.nf.format(mostRecent));
+          .append(GfStatsReader.getNumberFormat().format(mostRecent));
       return result.toString();
     }
   }

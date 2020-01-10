@@ -5,13 +5,13 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.nio.file.Paths;
 
+import io.pivotal.services.dataTx.geode.operations.stats.*;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceInst;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceType;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatDescriptor;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatValue;
+import nyla.solutions.core.io.IO;
 import org.junit.Test;
-
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceInst;
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceType;
-import io.pivotal.services.dataTx.geode.operations.stats.StatDescriptor;
-import io.pivotal.services.dataTx.geode.operations.stats.StatValue;
-import io.pivotal.services.dataTx.geode.operations.stats.visitors.GenericCsvStatsVisitor;
 
 import static org.mockito.Mockito.*;
 
@@ -72,4 +72,25 @@ public class GenericCsvStatsVisitorTest
 		assertTrue(Paths.get(expectFileName).toFile().exists());
 	}
 
+	@Test
+	public void test_setoutputfile_for_multiple_stats()
+			throws Exception
+	{
+		Paths.get("target/c1.csv").toFile().delete();
+		Paths.get("target/c2.csv").toFile().delete();
+
+		File statFile = new File("src/test/resources/stats/server1.gfs");
+		GfStatsReader statsReader = new GfStatsReader(statFile);
+		GenericCsvStatsVisitor v1 = new GenericCsvStatsVisitor(
+				new File("target/c1.csv"));
+		GenericCsvStatsVisitor v2 = new GenericCsvStatsVisitor(
+				new File("target/c2.csv"));
+
+		statsReader.acceptVisitors(v1, v2);
+
+		assertTrue(IO.listFiles(Paths.get("target").toFile(),"c1.csv.*").length > 0);
+		assertTrue(IO.listFiles(Paths.get("target").toFile(),"c2.csv.*").length > 0);
+
+
+	}
 }

@@ -1,14 +1,14 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 import java.io.File;
 
 /**
    * Wraps an instance of StatSpec but alwasy returns a combine type of NONE.
    */
-  class RawStatSpec implements StatSpec {
+  public class RawStatSpec implements StatSpec {
     private final StatSpec spec;
 
-    RawStatSpec(StatSpec wrappedSpec) {
+    public RawStatSpec(StatSpec wrappedSpec) {
       this.spec = wrappedSpec;
     }
 

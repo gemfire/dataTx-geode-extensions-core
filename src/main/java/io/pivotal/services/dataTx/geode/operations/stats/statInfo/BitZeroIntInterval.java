@@ -1,4 +1,4 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
 
 class BitZeroIntInterval extends BitZeroInterval {
     int bits;

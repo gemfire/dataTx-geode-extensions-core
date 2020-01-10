@@ -1,29 +1,29 @@
 package io.pivotal.services.dataTx.geode.operations.stats;
 
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.ARCHIVE_VERSION;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.BOOLEAN_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.BYTE_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.CHAR_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.COMPACT_VALUE_2_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.DOUBLE_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.FLOAT_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.HEADER_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.ILLEGAL_RESOURCE_INST_ID;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.ILLEGAL_RESOURCE_INST_ID_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.ILLEGAL_STAT_OFFSET;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.INT_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.INT_TIMESTAMP_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.LONG_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.MAX_BYTE_RESOURCE_INST_ID;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.MIN_1BYTE_COMPACT_VALUE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.RESOURCE_INSTANCE_CREATE_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.RESOURCE_INSTANCE_DELETE_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.RESOURCE_INSTANCE_INITIALIZE_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.RESOURCE_TYPE_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.SAMPLE_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.SHORT_CODE;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.SHORT_RESOURCE_INST_ID_TOKEN;
-import static io.pivotal.services.dataTx.geode.operations.stats.StatArchiveFormat.WCHAR_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.ARCHIVE_VERSION;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.BOOLEAN_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.BYTE_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.CHAR_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.COMPACT_VALUE_2_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.DOUBLE_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.FLOAT_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.HEADER_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.ILLEGAL_RESOURCE_INST_ID;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.ILLEGAL_RESOURCE_INST_ID_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.ILLEGAL_STAT_OFFSET;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.INT_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.INT_TIMESTAMP_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.LONG_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.MAX_BYTE_RESOURCE_INST_ID;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.MIN_1BYTE_COMPACT_VALUE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.RESOURCE_INSTANCE_CREATE_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.RESOURCE_INSTANCE_DELETE_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.RESOURCE_INSTANCE_INITIALIZE_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.RESOURCE_TYPE_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.SAMPLE_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.SHORT_CODE;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.SHORT_RESOURCE_INST_ID_TOKEN;
+import static io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatArchiveFormat.WCHAR_CODE;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -43,24 +43,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.*;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.GenericCsvStatsVisitor;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.StatsVisitor;
 import nyla.solutions.core.io.IO;
 
 /**
  * Based on GEODE-78
- * 
- * @author Gregory Green
- *
  */
-public class GfStatsReader implements StatsInfo
+public class GfStatsReader
 {
 
 	private static final String GEMFIRE_LOG_FORMAT = "yyyy/MM/dd HH:mm:ss.SSS z";
 
-	protected static final NumberFormat nf = NumberFormat.getNumberInstance();
+	private static final NumberFormat nf = NumberFormat.getNumberInstance();
+
+	public static NumberFormat getNumberFormat()
+	{
+		return nf;
+	}//-------------------------------------------
 
 	static
 	{
@@ -125,7 +129,7 @@ public class GfStatsReader implements StatsInfo
 		update(false);
 	}
 
-	protected String getArchiveFileName()
+	public String getArchiveFileName()
 	{
 		return archive.getAbsolutePath();
 	}
@@ -248,7 +252,7 @@ public class GfStatsReader implements StatsInfo
 	/**
 	 * sets the time zone this archive was written in.
 	 */
-	void setTimeZone(TimeZone z)
+	public void setTimeZone(TimeZone z)
 	{
 		timeFormatter.setTimeZone(z);
 	}
@@ -256,7 +260,7 @@ public class GfStatsReader implements StatsInfo
 	/**
 	 * @return the time series for this archive.
 	 */
-	TimeStampSeries getTimeStamps()
+	public TimeStampSeries getTimeStamps()
 	{
 		return timeSeries;
 	}
@@ -313,7 +317,7 @@ public class GfStatsReader implements StatsInfo
 	public void dumpCsvFiles()
 	{
 		GenericCsvStatsVisitor visitor = new GenericCsvStatsVisitor(this.archive);
-		this.accept(visitor);
+		this.acceptVisitors(visitor);
 	}
 	/**
 	 * 
@@ -489,7 +493,7 @@ public class GfStatsReader implements StatsInfo
 		}
 	}
 
-	boolean loadStatDescriptor(StatDescriptor stat, ResourceType type)
+	public boolean loadStatDescriptor(StatDescriptor stat, ResourceType type)
 	{
 		// note we don't have instance data yet
 		if (!type.isLoaded())
@@ -553,7 +557,7 @@ public class GfStatsReader implements StatsInfo
 		}
 	}
 
-	boolean loadStat(StatDescriptor stat, ResourceInst resource)
+	public boolean loadStat(StatDescriptor stat, ResourceInst resource)
 	{
 		ResourceType type = resource.getType();
 		if (!resource.isLoaded() || !type.isLoaded() || !stat.isLoaded())
@@ -911,7 +915,7 @@ public class GfStatsReader implements StatsInfo
 		return result;
 	}
 
-	protected static double bitsToDouble(int type, long bits)
+	public static double bitsToDouble(int type, long bits)
 	{
 		switch (type)
 		{
@@ -932,41 +936,58 @@ public class GfStatsReader implements StatsInfo
 		}
 	}
 
-	@Override
-	public void accept(StatsVisitor visitor)
+	public void acceptVisitors(StatsVisitor ... visitors)
 	{
 
-		if (info != null)
-		{
-			visitor.visitArchInfo(info);
-		}
+		if(visitors == null || visitors.length == 0)
+			return;
 
-		visitor.visitResourceInsts(resourceInstTable);
-		
-		if(resourceTypeTable != null)
-		{
-			for (ResourceType aResourceTypeTable : resourceTypeTable)
+		Stream<StatsVisitor> streamVisitor = Arrays.stream(visitors);
+
+		streamVisitor.forEach( visitor -> {
+
+			if (info != null)
 			{
-				if (aResourceTypeTable != null)
+				visitor.visitArchInfo(info);
+			}
+
+			visitor.visitResourceInsts(resourceInstTable);
+
+			if(resourceTypeTable != null)
+			{
+				for (ResourceType aResourceTypeTable : resourceTypeTable)
 				{
-					visitor.visitResourceType(aResourceTypeTable);
+					if (aResourceTypeTable != null)
+					{
+						visitor.visitResourceType(aResourceTypeTable);
+					}
 				}
 			}
-		}
+
+			visitor.visitTimeStampSeries(timeSeries);
+
+			if(resourceInstTable != null)
+			{
+				for (ResourceInst inst : resourceInstTable)
+				{
+					if (inst != null)
+					{
+						visitor.visitResourceInst(inst);
+					}
+				}
+
+			}
+
+		});
+
+
+
+		
+
 	
-		visitor.visitTimeStampSeries(timeSeries);
+
 		
-		if(resourceInstTable != null)
-		{
-			for (ResourceInst inst : resourceInstTable)
-			{
-				if (inst != null)
-				{
-					visitor.visitResourceInst(inst);
-				}
-			}
-			
-		}
+
 
 	}//------------------------------------------------
 	/**
@@ -1038,7 +1059,7 @@ public class GfStatsReader implements StatsInfo
 			
 			System.out.println("accepting");
 			GfStatsReader reader = new GfStatsReader(archiveFile.getAbsolutePath());
-			reader.accept(visitor);
+			reader.acceptVisitors(visitor);
 			
 		}
 		catch (IOException e)

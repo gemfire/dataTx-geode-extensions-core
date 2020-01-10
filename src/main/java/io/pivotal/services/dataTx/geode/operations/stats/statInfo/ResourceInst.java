@@ -1,4 +1,6 @@
-package io.pivotal.services.dataTx.geode.operations.stats;
+package io.pivotal.services.dataTx.geode.operations.stats.statInfo;
+
+import io.pivotal.services.dataTx.geode.operations.stats.GfStatsReader;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 public class ResourceInst
 {
 	   private final boolean loaded;
-	    private final GfStatsReader  archive;
+	    private final GfStatsReader archive;
 	    //    private final int uniqueId;
 	    private final ResourceType type;
 	    private final String name;
@@ -23,7 +25,7 @@ public class ResourceInst
 	    /*
 	     * Returns the approximate amount of memory used to implement this object.
 	     */
-	    protected int getMemoryUsed() {
+	    public int getMemoryUsed() {
 	      int result = 0;
 	      if (values != null) {
 	        for (SimpleValue value : values) {
@@ -69,7 +71,7 @@ public class ResourceInst
 	      return this.archive;
 	    }
 
-	    protected void dump(PrintWriter stream) {
+	    public void dump(PrintWriter stream) {
 	      stream.println(name + ":"
 	          + " file=" + getArchive().getArchiveFileName()
 	          + " id=" + id
@@ -80,7 +82,7 @@ public class ResourceInst
 	      }
 	    }
 
-	    protected ResourceInst(GfStatsReader archive, String name,
+	    public ResourceInst(GfStatsReader archive, String name,
 	        long id, ResourceType type, boolean loaded) {
 	      this.loaded = loaded;
 	      this.archive = archive;
@@ -103,7 +105,7 @@ public class ResourceInst
 	      }
 	    }
 
-	    void matchSpec(StatSpec spec, List<StatValue> matchedValues) {
+	    public void matchSpec(StatSpec spec, List<StatValue> matchedValues) {
 	      if (spec.typeMatches(this.type.getName())) {
 	        if (spec.instanceMatches(this.getName(), this.getId())) {
 	          for (SimpleValue value : values) {
@@ -117,7 +119,7 @@ public class ResourceInst
 	      }
 	    }
 
-	    protected void initialValue(int statOffset, long v) {
+	    public void initialValue(int statOffset, long v) {
 	      if (this.values != null && this.values[statOffset] != null) {
 	        this.values[statOffset].initialValue(v);
 	      }
@@ -126,7 +128,7 @@ public class ResourceInst
 	    /*
 	     * Returns true if sample was added.
 	     */
-	    protected boolean addValueSample(int statOffset, long statDeltaBits) {
+	    public boolean addValueSample(int statOffset, long statDeltaBits) {
 	      if (this.values != null && this.values[statOffset] != null) {
 	        this.values[statOffset].prepareNextBits(statDeltaBits);
 	        return true;
@@ -143,7 +145,7 @@ public class ResourceInst
 	     * Frees up any resources no longer needed after the archive file is closed.
 	     * Returns true if this guy is no longer needed.
 	     */
-	    protected boolean close() {
+	    public boolean close() {
 	      if (isLoaded()) {
 	        for (SimpleValue value : values) {
 	          if (value != null) {
@@ -234,7 +236,7 @@ public class ResourceInst
 	      return this.type;
 	    }
 
-	    protected void makeInactive() {
+	    public void makeInactive() {
 	      this.active = false;
 	      lastTSidx = archive.getTimeStamps().getSize() - 1;
 	      close(); // this frees up unused memory now that no more samples
@@ -248,7 +250,7 @@ public class ResourceInst
 	      return this.active;
 	    }
 
-	    protected void addTimeStamp() {
+	    public void addTimeStamp() {
 	      if (this.loaded) {
 	        if (firstTSidx == -1) {
 	          firstTSidx = archive.getTimeStamps().getSize() - 1;

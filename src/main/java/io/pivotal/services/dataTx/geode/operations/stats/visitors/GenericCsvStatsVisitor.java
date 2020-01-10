@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceInst;
-import io.pivotal.services.dataTx.geode.operations.stats.ResourceType;
-import io.pivotal.services.dataTx.geode.operations.stats.StatDescriptor;
-import io.pivotal.services.dataTx.geode.operations.stats.StatValue;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceInst;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceType;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatDescriptor;
+import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatValue;
 import nyla.solutions.core.io.csv.CsvWriter;
 
 /**
