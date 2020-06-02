@@ -1,11 +1,11 @@
 package io.pivotal.services.dataTx.geode.listeners;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.function.Consumer;
 
 import org.apache.geode.cache.EntryEvent;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.pivotal.services.dataTx.geode.listeners.CacheListenerBridge;
 

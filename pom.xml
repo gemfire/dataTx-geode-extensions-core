@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.pivotal.services.dataTx</groupId>
 	<artifactId>dataTx-geode-extensions-core</artifactId>
-	<version>2.1.2</version>
+	<version>3.0.0</version>
 	<name>dataTx-geode-extensions-core</name>
 	<description>Apache Geode/GemFire extensions - common development extensions powered by Apache Geode</description>
 	<properties>
@@ -11,8 +11,9 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.javadoc.skip>false</maven.javadoc.skip>
-		<gemfire.version>9.3.0</gemfire.version>
-		<jacoco.method.coverage>0.0</jacoco.method.coverage>	
+		<geode.version>1.9.0</geode.version>
+		<jacoco.method.coverage>0.0</jacoco.method.coverage>
+		<log4j.version>2.11.1</log4j.version>
 		<findbugs.skip>true</findbugs.skip>
 	</properties>
 	<url>https://github.com/Pivotal-Data-Engineering/dataTx-geode-extensions-core</url>
@@ -25,22 +26,6 @@
 	<scm>
 		<url>https://github.com/Pivotal-Data-Engineering/dataTx-geode-extensions-core.git</url>
 	</scm>
-	<repositories>
-		<repository>
-			<id>gemfire-release-repo</id>
-			<name>Pivotal GemFire Release Repository</name>
-			<url>https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>Central Repository</name>
-			<url>http://repo.maven.apache.org/maven2</url>
-			<layout>default</layout>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 		<developers>
 			<developer>
 				<name>Gregory Green</name>
@@ -49,35 +34,40 @@
 		</developers>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.6.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.pivotal.gemfire</groupId>
+			<groupId>org.apache.geode</groupId>
 			<artifactId>geode-core</artifactId>
-			<version>${gemfire.version}</version>
+			<version>${geode.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.pivotal.gemfire</groupId>
+			<groupId>org.apache.geode</groupId>
 			<artifactId>geode-wan</artifactId>
-			<version>${gemfire.version}</version>
+			<version>${geode.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.pivotal.gemfire</groupId>
+			<groupId>org.apache.geode</groupId>
 			<artifactId>geode-cq</artifactId>
-			<version>${gemfire.version}</version>
+			<version>${geode.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.pivotal.gemfire</groupId>
+			<groupId>org.apache.geode</groupId>
 			<artifactId>geode-lucene</artifactId>
-			<version>${gemfire.version}</version>
+			<version>${geode.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.8.2</version>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.nyla-solutions</groupId>
@@ -90,28 +80,6 @@
 			<version>2.7.22</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>io.pivotal.gemfire</groupId>
-			<artifactId>geode-lucene</artifactId>
-			<version>${gemfire.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework.shell</groupId>
-		    <artifactId>spring-shell</artifactId>
-		    <version>1.2.0.RELEASE</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-core</artifactId>
-		    <version>4.3.20.RELEASE</version>
-		</dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.7.22</version>
-            <scope>test</scope>
-        </dependency>
-
 	</dependencies>
 	<build>
 		<plugins>
@@ -176,24 +144,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.8</version>
-				<configuration>
-					<outputDirectory>${project.build.directory}/javadoc</outputDirectory>
-					<reportOutputDirectory>${project.reporting.outputDirectory}/javadoc</reportOutputDirectory>
-					<version>2.8</version>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>

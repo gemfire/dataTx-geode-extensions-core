@@ -29,11 +29,6 @@ public class ClearRegionFunction implements Function<Object>, Declarable
 {
 
 	@Override
-	public void init(Properties arg0)
-	{
-	}
-
-	@Override
 	public void execute(FunctionContext<Object> functionContext)
 	{
 		Logger logWriter = LogManager.getLogger(ClearRegionFunction.class);

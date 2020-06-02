@@ -1,17 +1,16 @@
 package io.pivotal.services.dataTx.geode.client;
 
-import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
 
 import org.apache.geode.security.AuthInitialize;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import io.pivotal.services.dataTx.geode.client.GeodeConfigAuthInitialize;
-import io.pivotal.services.dataTx.geode.client.GeodeSettings;
 import nyla.solutions.core.io.IO;
 import nyla.solutions.core.util.Config;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The VCAP configuration authorization initialization test
@@ -68,8 +67,8 @@ public class GeodeConfigAuthInitializeTest
 			
 	
 			String username = out.getProperty(GeodeConfigAuthInitialize.USER_NAME);
-			Assert.assertTrue(username  != null && username.trim().length()> 0);
-			Assert.assertNotNull(out.getProperty(GeodeConfigAuthInitialize.PASSWORD));
+			assertTrue(username  != null && username.trim().length()> 0);
+			assertNotNull(out.getProperty(GeodeConfigAuthInitialize.PASSWORD));
 			
 		
 		}

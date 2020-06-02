@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Execution;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import io.pivotal.services.dataTx.geode.functions.JvmExecution;
@@ -25,7 +25,7 @@ public class JvmExecutionTest {
         Set<?> set = Mockito.mock(Set.class);
         Execution<?,?,?> exe = jvm.withFilter(set);
 
-        Assert.assertEquals(jvm,exe);
+        assertEquals(jvm,exe);
 
     }
 
@@ -38,7 +38,7 @@ public class JvmExecutionTest {
 
         Execution<?,?,?> exe = jvm.withArgs("");
 
-        Assert.assertEquals(jvm,exe); 
+        assertEquals(jvm,exe);
 
     }
 }

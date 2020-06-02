@@ -1,6 +1,6 @@
 package io.pivotal.services.dataTx.geode.client;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.net.URI;
@@ -8,12 +8,9 @@ import java.util.List;
 
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.PoolFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.pivotal.services.dataTx.geode.client.GeodeConfigConstants;
-import io.pivotal.services.dataTx.geode.client.GeodeSettings;
 import nyla.solutions.core.io.IO;
 import nyla.solutions.core.util.Config;
 
@@ -42,7 +39,7 @@ public class GeodeSettingsTest
 
 	}
 	@Test
-	public void testGetLocatorUrlList() throws Exception
+	public void testGetLocatorUrlList()
 	{
 		System.setProperty(GeodeConfigConstants.LOCATORS_PROP, "host1[1],host2[2],host2[3];");
 		
@@ -53,7 +50,7 @@ public class GeodeSettingsTest
 		
 	}//--------------------------------------
 	@Test
-	public void testLocatorsBuild() throws Exception
+	public void testLocatorsBuild()
 	{
 		try
 		{
@@ -86,14 +83,10 @@ public class GeodeSettingsTest
 
 	@Test
 	public void testGetInstance()
-	throws Exception
 	{
-		
-		
-		
 		GeodeSettings config = GeodeSettings.getInstance();
 		
-		Assert.assertNotNull(config);
+		assertNotNull(config);
 		
 	}//------------------------------------------------
 
@@ -106,12 +99,12 @@ public class GeodeSettingsTest
 		
 		String locators = config.getLocators();
 		System.out.println("locators:"+locators);
-		Assert.assertNotNull(locators);
-		Assert.assertEquals("10.244.0.4[55221],10.244.1.2[55221],10.244.0.130[55221]",locators);
+		assertNotNull(locators);
+		assertEquals("10.244.0.4[55221],10.244.1.2[55221],10.244.0.130[55221]",locators);
 	}//------------------------------------------------
 
 	@Test
-	public void testBlankEnvContent() throws Exception
+	public void testBlankEnvContent()
 	{
 		String envContent = null;
 		GeodeSettings config = new GeodeSettings(envContent);
@@ -121,7 +114,7 @@ public class GeodeSettingsTest
 		if(envLocatorHost == null || envLocatorHost.length() == 0)
 		{
 			List<URI> l = config.getLocatorUrlList();
-			assertTrue("getLocatorHost:"+config.getLocatorUrlList()+" would be empty",
+			assertTrue(
 			l == null || l.size() == 0); 
 			
 			
@@ -129,7 +122,7 @@ public class GeodeSettingsTest
 			config = new GeodeSettings(envContent);
 			
 			l = config.getLocatorUrlList();
-			assertTrue("getLocatorHost:"+l+" would be empty",l == null || l.size() == 0); 
+			assertTrue(l == null || l.size() == 0);
 
 		}
 		else
@@ -146,11 +139,11 @@ public class GeodeSettingsTest
 		GeodeSettings config = new GeodeSettings(envContent);
 		
 		String token = null;
-		Assert.assertNull(config.getSecuredToken("invalid", token));
-		Assert.assertEquals("developer", config.getSecuredToken("developer", token).getName());
-		Assert.assertEquals("cluster_operator", config.getSecuredToken("cluster_operator", token).getName());
+		assertNull(config.getSecuredToken("invalid", token));
+		assertEquals("developer", config.getSecuredToken("developer", token).getName());
+		assertEquals("cluster_operator", config.getSecuredToken("cluster_operator", token).getName());
 		
-		Assert.assertNotNull(config.getSecuredToken(null));
+		assertNotNull(config.getSecuredToken(null));
 	}//------------------------------------------------
 	/**
 	 * Test Get password
@@ -164,8 +157,8 @@ public class GeodeSettingsTest
 		GeodeSettings config = new GeodeSettings(envContent);
 		
 		String token = null;
-		Assert.assertArrayEquals("some_developer_password".toCharArray(), config.getSecuredToken("developer", token).getCredentials());
-		Assert.assertArrayEquals("some_password".toCharArray(), config.getSecuredToken("cluster_operator", token).getCredentials());
+		assertArrayEquals("some_developer_password".toCharArray(), config.getSecuredToken("developer", token).getCredentials());
+		assertArrayEquals("some_password".toCharArray(), config.getSecuredToken("cluster_operator", token).getCredentials());
 	
 	}
 

@@ -10,6 +10,13 @@ import org.apache.geode.cache.execute.ResultSender;
 
 public class JvmRegionFunctionContext<K, V,T> implements RegionFunctionContext
 {
+	private String functionId;
+	private Region<K, V> dataSet;
+	private Object arguments;
+	private Set<?> filter;
+	private ResultSender<T> resultSender;
+	private final Cache cache;
+
 	public JvmRegionFunctionContext()
 	{
 		this(CacheFactory.getAnyInstance());
@@ -19,12 +26,12 @@ public class JvmRegionFunctionContext<K, V,T> implements RegionFunctionContext
 	{
 		this.cache = cache;
 	}
-
 	public JvmRegionFunctionContext(Region<K,V> dataSet,ResultSender<T> resultSender, Object arguments, Set<?> filter)
 	{
 		this(CacheFactory.getAnyInstance(),dataSet,resultSender,arguments,filter);
 		
 	}
+
 	public JvmRegionFunctionContext(Cache cache, Region<K,V> dataSet,ResultSender<T> resultSender, Object arguments, Set<?> filter)
 	{
 		this.dataSet = dataSet;
@@ -33,7 +40,7 @@ public class JvmRegionFunctionContext<K, V,T> implements RegionFunctionContext
 		this.arguments = arguments;
 		this.cache = cache;
 	}//-------------------------------------------------------------------
-	
+
 	public Object getArguments()
 	{
 		return this.arguments;
@@ -64,7 +71,7 @@ public class JvmRegionFunctionContext<K, V,T> implements RegionFunctionContext
 	{
 		return dataSet;
 	}
-	
+
 	/**
 	 * @param functionId the functionId to set
 	 */
@@ -81,12 +88,5 @@ public class JvmRegionFunctionContext<K, V,T> implements RegionFunctionContext
 	{
 		return cache;
 	}
-
-	private String functionId;
-	private Region<K, V> dataSet;
-	private Object arguments;
-	private Set<?> filter;
-	private ResultSender<T> resultSender;
-	private final Cache cache;
 
 }

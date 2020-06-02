@@ -16,11 +16,14 @@ import org.apache.geode.distributed.DistributedMember;
 public class JvmResultCollector<T, S> implements ResultCollector<T, S>
 {
 	@SuppressWarnings("rawtypes")
+	private JvmResultsSender sender = new JvmResultsSender();
+
+	@SuppressWarnings("rawtypes")
 	public JvmResultCollector(JvmResultsSender resultSender)
 	{
 		this.sender = resultSender;
 	}//-------------------------------------------------------------------
-	
+
 	@SuppressWarnings("unchecked")
 	public S getResult() throws FunctionException
 	{
@@ -35,19 +38,16 @@ public class JvmResultCollector<T, S> implements ResultCollector<T, S>
 
 	public void addResult(DistributedMember paramDistributedMember, T paramT)
 	{
-		
+
 	}
 
 	public void endResults()
 	{
-		
+
 	}
 
 	public void clearResults()
 	{
 	}
-
-	@SuppressWarnings("rawtypes")
-	private JvmResultsSender sender = new JvmResultsSender();
 
 }

@@ -1,8 +1,8 @@
 package io.pivotal.services.dataTx.geode.operations.csv;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.pivotal.services.dataTx.geode.demo.SimpleObject;
 import io.pivotal.services.dataTx.geode.operations.csv.CsvHeaderConverter;

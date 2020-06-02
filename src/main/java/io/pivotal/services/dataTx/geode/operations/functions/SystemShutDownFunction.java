@@ -142,11 +142,6 @@ public class SystemShutDownFunction implements Function<Object>, Declarable
 			return false;
 	}
 
-	public void init(Properties arg0)
-	{
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 }

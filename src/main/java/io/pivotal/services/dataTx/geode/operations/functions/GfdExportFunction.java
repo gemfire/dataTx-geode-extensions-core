@@ -183,13 +183,7 @@ public class GfdExportFunction  implements Function<Object>, Declarable
 	{
 		return false;
 	}
-	
-	
-	@Override
-	public void init(Properties properties)
-	{
-		
-	}
+
 	
 	/**
 	 * 

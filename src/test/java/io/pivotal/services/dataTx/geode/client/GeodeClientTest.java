@@ -6,13 +6,12 @@ import org.apache.geode.pdx.PdxReader;
 import org.apache.geode.pdx.PdxSerializer;
 import org.apache.geode.pdx.PdxWriter;
 import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import io.pivotal.services.dataTx.geode.client.GeodeClient;
 import nyla.solutions.core.util.Config;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -37,11 +36,11 @@ public class GeodeClientTest  {
 		
 		assertTrue(!props.isEmpty());
 		
-		assertTrue("Has ssl",props.keySet().stream().anyMatch(k -> k.toString().startsWith("ssl")));
+		assertTrue(props.keySet().stream().anyMatch(k -> k.toString().startsWith("ssl")));
 		
 	}//------------------------------------------------
     @Test
-    @Ignore
+    @Disabled
     public void testing_security()
             throws Exception
     {
@@ -83,9 +82,9 @@ public class GeodeClientTest  {
     	    assertTrue(pdxSerializerVerifier instanceof TestPdxSerialzier);
 	}
     
-    @Ignore
+    @Disabled
     @Test
-	public void testRegisterListener() throws Exception
+	public void testRegisterListener()
 	{
     	Consumer<EntryEvent<String, Object>> consumer = e -> System.out.println("event:"+e);
 		

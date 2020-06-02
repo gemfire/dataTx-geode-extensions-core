@@ -14,7 +14,6 @@ import org.apache.geode.DataSerializer;
 import org.apache.geode.internal.cache.GemFireCacheImpl;
 import org.apache.geode.internal.cache.snapshot.ExportedRegistry;
 import org.apache.geode.internal.cache.snapshot.SnapshotPacket.SnapshotRecord;
-import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.pdx.internal.EnumInfo;
 import org.apache.geode.pdx.internal.PdxType;
 import org.apache.geode.pdx.internal.TypeRegistry;
@@ -58,7 +57,7 @@ public class SnapshotRecordReader implements Closeable
         version = tmp.readByte();
         if (version == SNAP_VER_1) {
           throw new IOException(
-              LocalizedStrings.Snapshot_UNSUPPORTED_SNAPSHOT_VERSION_0.toLocalizedString(SNAP_VER_1)
+              "Snapshot_UNSUPPORTED_SNAPSHOT_VERSION_0"
                   + ": " + in);
 
         } else if (version == SNAP_VER_2) {
@@ -66,8 +65,7 @@ public class SnapshotRecordReader implements Closeable
           byte[] format = new byte[3];
           tmp.readFully(format);
           if (!Arrays.equals(format, SNAP_FMT)) {
-            throw new IOException(LocalizedStrings.Snapshot_UNRECOGNIZED_FILE_TYPE_0
-                .toLocalizedString(Arrays.toString(format)) + ": " + in);
+            throw new IOException("Snapshot_UNRECOGNIZED_FILE_TYPE_0"+Arrays.toString(format));
           }
 
           // read pdx location
@@ -84,7 +82,7 @@ public class SnapshotRecordReader implements Closeable
           }
         } else {
           throw new IOException(
-              LocalizedStrings.Snapshot_UNRECOGNIZED_FILE_VERSION_0.toLocalizedString(version)
+              "Snapshot_UNRECOGNIZED_FILE_VERSION_0.toLocalizedString(version)"
                   + ": " + in);
         }
       } finally {

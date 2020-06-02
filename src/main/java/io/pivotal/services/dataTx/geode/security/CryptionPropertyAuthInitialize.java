@@ -2,7 +2,6 @@ package io.pivotal.services.dataTx.geode.security;
 
 import java.util.Properties;
 
-import org.apache.geode.LogWriter;
 import org.apache.geode.distributed.DistributedMember;
 import org.apache.geode.security.AuthInitialize;
 import org.apache.geode.security.AuthenticationFailedException;
@@ -91,11 +90,6 @@ public class CryptionPropertyAuthInitialize implements AuthInitialize
 		
 	}// ------------------------------------------------	
 
-	//@Override
-	public void init(LogWriter systemLogger, LogWriter securityLogger)
-			throws AuthenticationFailedException
-	{
-	}// ------------------------------------------------
 	private static Settings settings = Config.getSettings();
 	//private ResourceBundle config = ResourceBundle.getBundle("config");
 }

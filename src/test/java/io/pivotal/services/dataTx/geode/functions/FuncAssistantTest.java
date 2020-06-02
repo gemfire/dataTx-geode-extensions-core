@@ -2,12 +2,11 @@ package io.pivotal.services.dataTx.geode.functions;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.RegionFunctionContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import io.pivotal.services.dataTx.geode.functions.FuncAssistant;
-import io.pivotal.services.dataTx.geode.functions.JvmRegionFunctionContext;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 /**
  * Test for FuncAssistant
@@ -25,7 +24,7 @@ public class FuncAssistantTest
 
         Region<?, ?> localPrimaryData = FuncAssistant.getLocalPrimaryData(region, rfc);
 
-        Assert.assertNotNull(localPrimaryData);
+        assertNotNull(localPrimaryData);
 
     }
 }

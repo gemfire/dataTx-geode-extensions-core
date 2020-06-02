@@ -3,8 +3,8 @@ package io.pivotal.services.dataTx.geode.operations.functions;
 import javax.annotation.Resource;
 
 import org.apache.geode.cache.Region;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.pivotal.services.dataTx.geode.demo.ComplexObject;
 
@@ -18,7 +18,7 @@ public class ImportJsonFunctionTest
 	@Resource
 	Region<String,ComplexObject> deals;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception
 	{
 	}

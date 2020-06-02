@@ -30,7 +30,6 @@ implements AuthInitialize, GeodeConfigConstants
 {
 	private final GeodeSettings vcapConfig;
  
-	  //private LogWriter logWriter, securityLogWriter;
 
 	  /**
 	   * Constructor

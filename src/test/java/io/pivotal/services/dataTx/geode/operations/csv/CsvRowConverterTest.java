@@ -1,6 +1,6 @@
 package io.pivotal.services.dataTx.geode.operations.csv;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.geode.pdx.PdxInstance;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.pivotal.services.dataTx.geode.demo.ComplexObject;
 import io.pivotal.services.dataTx.geode.demo.SimpleObject;

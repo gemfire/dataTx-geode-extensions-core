@@ -1,6 +1,7 @@
 package io.pivotal.services.dataTx.geode.functions;
 
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionService;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 
@@ -9,17 +10,10 @@ import org.apache.geode.cache.client.ClientCacheFactory;
  * @author Gregory Green
  *
  */
-public class ClientRegionDictionary implements RegionDictionary
+public class ClientRegionDictionary extends CacheRegionDictionary
 {
-
-	public <K, V> Region<K, V> getRegion(String name)
+	public ClientRegionDictionary(RegionService regionService)
 	{
-		ClientCache cache = ClientCacheFactory.getAnyInstance();
-		
-		
-		
-		return cache.getRegion(name);
-		
+		super(regionService);
 	}
-
 }

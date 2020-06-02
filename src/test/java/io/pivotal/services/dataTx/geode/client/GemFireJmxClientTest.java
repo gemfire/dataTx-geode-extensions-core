@@ -1,25 +1,19 @@
 package io.pivotal.services.dataTx.geode.client;
 
 
-import static org.junit.Assert.assertNotNull;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import io.pivotal.services.dataTx.geode.client.GemFireJmxClient;
 import nyla.solutions.core.patterns.jmx.JMX;
 import nyla.solutions.core.util.Debugger;
 
-//@Ignore
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * 
- * locator-idp-606068407.us-west-2.elb.amazonaws.com
- * cache-idp-104800883.us-west-2.elb.amazonaws.com
- * cache2-idp-1239450408.us-west-2.elb.amazonaws.com
  * 
  * @author Gregory Green
  *
@@ -30,12 +24,10 @@ public class GemFireJmxClientTest
 	static ClientCache cache  = null;
 	static Region<Object, Object> region= null;
 	
-	//@BeforeClass
+	//@BeforeEachClass
 	public static void setUp()
 	{
 		
-		//factory = new ClientCacheFactory().addPoolLocator("ec2-52-27-12-106.us-west-2.compute.amazonaws.com", 10000)
-		//locator2-idp-979146816.us-west-2.elb.amazonaws.com
 		factory = new ClientCacheFactory().addPoolLocator("locator2-idp-979146816.us-west-2.elb.amazonaws.com", 10000)
 				.set("log-level", "fine").set("log-file", "target/client.log");
 		cache = factory.create();
@@ -59,7 +51,7 @@ public class GemFireJmxClientTest
 		
 	    region.put("world", "hello");
 		
-		Assert.assertEquals("hello",region.get("world"));
+		assertEquals("hello",region.get("world"));
 		
 		System.out.println(region.get("world"));
 	}
@@ -69,7 +61,7 @@ public class GemFireJmxClientTest
 	{
 		
 		region = cache.getRegion("Test");
-		Assert.assertEquals("hello",region.get("world"));
+		assertEquals("hello",region.get("world"));
 		
 		System.out.println(region.get("world"));
 	}
@@ -88,7 +80,7 @@ public class GemFireJmxClientTest
 		
 		region.put("greg", "hello");
 		
-		Assert.assertEquals("hello",region.get("greg"));
+		assertEquals("hello",region.get("greg"));
 	}
 
 }

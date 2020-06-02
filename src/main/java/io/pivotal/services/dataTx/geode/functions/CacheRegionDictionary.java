@@ -2,8 +2,8 @@ package io.pivotal.services.dataTx.geode.functions;
 
 import java.io.Serializable;
 
-import org.apache.geode.cache.CacheFactory;
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionService;
 
 
 /**
@@ -13,16 +13,23 @@ import org.apache.geode.cache.Region;
 public class CacheRegionDictionary implements RegionDictionary, Serializable
 {
 
+	private final RegionService regionService;
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9067270223076402385L;
 
+	public CacheRegionDictionary(RegionService regionService)
+	{
+		this.regionService = regionService;
+	}
+
 
 	@Override
 	public <K, V> Region<K, V> getRegion(String name)
 	{
-		return CacheFactory.getAnyInstance().getRegion(name);
+		return this.regionService.getRegion(name);
 	}
 
 }

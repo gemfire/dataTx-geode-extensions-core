@@ -1,10 +1,9 @@
 package io.pivotal.services.dataTx.geode.qa.performance;
 
 import org.apache.geode.cache.Region;
-import org.junit.Test;
 
-import io.pivotal.services.dataTx.geode.qa.performance.PutRegionJavaBeanLoadRunner;
 import nyla.solutions.core.security.user.data.UserProfile;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 

@@ -21,29 +21,34 @@ import nyla.solutions.core.exception.NotImplementedException;
  */
 public class JvmExecution<IN, OUT, AGG> implements Execution<IN, OUT, AGG>
 {
-	
+	private final Region<?,?> dataSet;
+	private Set<?> filter = null;
+
+	private Object arguments = null;
+
+
 	public JvmExecution(Region<?,?> region)
 	{
 		if (region == null)
 			throw new IllegalArgumentException("region: required");
-		
-		
+
+
 		this.dataSet = region;
 	}//-------------------------------------------------------------------
-	
+
 	@Override
 	public ResultCollector<OUT, AGG> execute(String functionId) throws FunctionException
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	@Override
 	public Execution<IN, OUT, AGG> withFilter(Set<?> filter)
 	{
 		this.filter = filter;
 		return this;
 	}
-	
+
 	@Override
 	public Execution<IN, OUT, AGG> withCollector(ResultCollector<OUT, AGG> resultcollector)
 	{
@@ -62,9 +67,9 @@ public class JvmExecution<IN, OUT, AGG> implements Execution<IN, OUT, AGG>
 		 this.arguments = args;
 		 return this;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param function the function to exe
 	 * @return the result collector
 	 * @throws FunctionException when the server side exception occurs
@@ -74,18 +79,13 @@ public class JvmExecution<IN, OUT, AGG> implements Execution<IN, OUT, AGG>
 	{
 		JvmResultsSender resultSender = new JvmResultsSender();
 		JvmResultCollector jmvResultCollector = new JvmResultCollector(resultSender);
-		
+
 		JvmRegionFunctionContext<?,?, ?> rfc = new JvmRegionFunctionContext
 				(dataSet, resultSender, arguments, filter);
-		
+
 		function.execute(rfc);
-		
-		
+
+
 		return jmvResultCollector;
 	}//-------------------------------------------------------------------
-
-	private final Region<?,?> dataSet;
-	private Set<?> filter = null;
-	
-	private Object arguments = null;
 }

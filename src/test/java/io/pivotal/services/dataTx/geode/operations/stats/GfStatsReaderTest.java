@@ -3,24 +3,23 @@ package io.pivotal.services.dataTx.geode.operations.stats;
 import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ArchiveInfo;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.RegionCsvStatsVisitor;
 import nyla.solutions.core.io.IO;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.Set;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore
+
+@Disabled
 public class GfStatsReaderTest
 {
 	@Test
 	public void testCsvs() throws Exception
 	{
-		//TODO: delete
 		File directory = new File("src/test/resources/stats/rdrlnxm28-server1.gfs");
 		GfStatsReader.toCvsFiles(directory);
 		
@@ -62,16 +61,12 @@ public class GfStatsReaderTest
 	}
 	@Test
 	public void testMainJustStat()
-	throws Exception
 	{
 		
 		String archiveName = "src/test/resources/stats/server1.gfs";
 	
 		String [] args = {archiveName};
 		GfStatsReader.main(args);
-		
-
-		
 	}
 	@Test
 	public void testDump()
@@ -91,8 +86,8 @@ public class GfStatsReaderTest
 	public void testPrettyPRint()
 	throws Exception
 	{
-		String archiveName = null;
-		GfStatsReader reader = null;
+		String archiveName;
+		GfStatsReader reader;
 
 		File file = new File("runtime/out.csv");
 		file.delete();

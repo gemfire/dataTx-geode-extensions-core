@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.cache.execute.ResultSender;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.pivotal.services.dataTx.geode.operations.csv.function.ExportCsvFunction;
 

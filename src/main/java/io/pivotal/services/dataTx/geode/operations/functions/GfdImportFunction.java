@@ -138,11 +138,7 @@ public class GfdImportFunction implements Function<Object>, Declarable
 	public boolean optimizeForWrite()
 	{
 		return true;
-	}// --------------------------------------------------------
-	@Override
-	public void init(Properties properties)
-	{
-	}// --------------------------------------------------------
+	}
 
 
 	/**
