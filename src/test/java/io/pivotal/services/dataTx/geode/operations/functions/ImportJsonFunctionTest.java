@@ -1,31 +1,27 @@
 package io.pivotal.services.dataTx.geode.operations.functions;
 
-import javax.annotation.Resource;
-
+import io.pivotal.services.dataTx.geode.demo.ComplexObject;
 import org.apache.geode.cache.Region;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.pivotal.services.dataTx.geode.demo.ComplexObject;
-
 public class ImportJsonFunctionTest
 {
 
-	public ImportJsonFunctionTest()
-	{
-	}
-	
-	@Resource
-	Region<String,ComplexObject> deals;
+    public ImportJsonFunctionTest()
+    {
+    }
+    Region<String, ComplexObject> deals;
 
-	@Before
-	public void setUp() throws Exception
-	{
-	}
+    @Before
+    public void setUp()
+    throws Exception
+    {
+    }
 
-	@Test
-	public void testExecute()
-	{
+    @Test
+    public void testExecute()
+    {
 //		Assert.assertNotNull(deals);
 //			
 //		int count = 20;
@@ -77,8 +73,8 @@ public class ImportJsonFunctionTest
 //		exe.execute("ImportJsonFunction");
 //		
 //		Assert.assertEquals(regionCount,deals.keySetOnServer().size());
-		
-		
-	}
+
+
+    }
 
 }
