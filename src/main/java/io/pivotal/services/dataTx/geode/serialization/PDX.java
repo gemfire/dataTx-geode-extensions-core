@@ -112,6 +112,7 @@ public class PDX
 	 * @param key the Region key
 	 * @param pdxInstance the region value PDX
 	 * @param <Key> the key type
+	 * @param valueClassName the value class name
 	 * @return the wrapper object
 	 */
 	public static <Key extends Serializable> SerializationPdxEntryWrapper toSerializePdxEntryWrapper(Key key, String valueClassName, PdxInstance pdxInstance)

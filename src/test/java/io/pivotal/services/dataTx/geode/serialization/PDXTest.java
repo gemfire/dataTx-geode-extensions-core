@@ -10,9 +10,7 @@ import org.apache.geode.cache.CacheClosedException;
 import org.apache.geode.cache.CacheFactory;
 import org.apache.geode.cache.Region;
 import org.apache.geode.pdx.PdxInstance;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -24,13 +22,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 
-//@Ignore
+//@Disabled
 public class PDXTest
 {
 
-	@Before
+	@BeforeEach
 	public void setUp()
 	throws Exception
 	{
@@ -157,7 +156,7 @@ public class PDXTest
 
 		ComplexObject actual = (ComplexObject)pdx.getObject();
 
-		Assert.assertEquals(expected,actual);
+		assertEquals(expected,actual);
 	}//-------------------------------------------
 	@Test
 	public void test_PDX_instance_to_json()
@@ -213,7 +212,7 @@ public class PDXTest
 				UserProfile.class.getName(),pdx);
 
 		String json = PDX.toJsonFromNondPdxObject(expected);
-		assertTrue(json,!json.contains(SerializationPdxEntryWrapper.class.getName()));
+		assertTrue(!json.contains(SerializationPdxEntryWrapper.class.getName()));
 
 		SerializationPdxEntryWrapper actual = PDX.toSerializePdxEntryWrapperFromJson(json);
 		assertEquals(expected,actual);

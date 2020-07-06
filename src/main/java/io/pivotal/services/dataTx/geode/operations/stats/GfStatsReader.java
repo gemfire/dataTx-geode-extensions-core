@@ -251,6 +251,7 @@ public class GfStatsReader
 
 	/**
 	 * sets the time zone this archive was written in.
+	 * @param z the timezone
 	 */
 	public void setTimeZone(TimeZone z)
 	{

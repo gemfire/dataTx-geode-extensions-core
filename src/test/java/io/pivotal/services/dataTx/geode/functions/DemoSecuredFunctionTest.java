@@ -1,11 +1,11 @@
 package io.pivotal.services.dataTx.geode.functions;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 
 import org.apache.geode.security.ResourcePermission;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import nyla.solutions.core.security.data.SecurityAccessControl;
 import nyla.solutions.core.security.data.SecurityPermission;
@@ -37,7 +37,7 @@ public class DemoSecuredFunctionTest
 		
 		for (ResourcePermission resourcePermission : funcPermissions)
 		{
-			assertTrue("has:"+resourcePermission.toString(),userAcl.checkPermission(new SecurityPermission(resourcePermission.toString())));
+			assertTrue(userAcl.checkPermission(new SecurityPermission(resourcePermission.toString())),"has:"+resourcePermission.toString());
 		}
 		
 	}

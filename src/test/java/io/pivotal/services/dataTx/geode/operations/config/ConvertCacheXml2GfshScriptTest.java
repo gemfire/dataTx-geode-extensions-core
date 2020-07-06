@@ -1,8 +1,8 @@
 package io.pivotal.services.dataTx.geode.operations.config;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import io.pivotal.services.dataTx.geode.operations.config.ConvertCacheXml2GfshScript;
 

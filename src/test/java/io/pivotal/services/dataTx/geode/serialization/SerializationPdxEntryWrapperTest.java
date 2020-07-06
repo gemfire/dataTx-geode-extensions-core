@@ -3,12 +3,13 @@ package io.pivotal.services.dataTx.geode.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.pivotal.services.dataTx.geode.demo.SimpleObject;
 import nyla.solutions.core.security.user.data.UserProfile;
-import org.junit.Test;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+
 
 public class SerializationPdxEntryWrapperTest
 {

@@ -16,6 +16,7 @@ import java.util.Set;
 
 	    /**
 	     * Creates a ComboValue by adding all the specified values together.
+		 * @param valueList  the value list
 	     */
 	    public ComboValue(List<?> valueList) {
 	      this((StatValue[]) valueList.toArray(new StatValue[valueList.size()]));
@@ -23,6 +24,7 @@ import java.util.Set;
 
 	    /**
 	     * Creates a ComboValue by adding all the specified values together.
+		 * @param values the combo values
 	     */
 	    public ComboValue(StatValue[] values) {
 	      this.values = values;

@@ -1,6 +1,6 @@
 package io.pivotal.services.dataTx.geode.io.search;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneQuery;

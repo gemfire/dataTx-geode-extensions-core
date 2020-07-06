@@ -10,7 +10,8 @@ package io.pivotal.services.dataTx.geode.serialization;
  * @author Gregory Green
  *
  */
-public class SerializationMapKeyWrapper
+public class
+SerializationMapKeyWrapper
 {
 	
 	public SerializationMapKeyWrapper()

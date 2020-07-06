@@ -4,6 +4,7 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 secret/
+src/test/resources/stats/*.csv
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties

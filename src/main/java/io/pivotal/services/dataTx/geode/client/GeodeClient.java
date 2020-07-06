@@ -148,7 +148,7 @@ public class GeodeClient
 	/**
 	 * Initialize security properties
 	 * @param props the security properties
-	 * @throws IOException 
+	 * @throws IOException when IOexception occurs
 	 */
 	protected static void constructSecurity(Properties props) throws IOException
 	{

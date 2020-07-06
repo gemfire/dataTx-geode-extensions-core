@@ -30,8 +30,8 @@ public class RegionTemplate<K,V>
 	}//------------------------------------------------
 
 	/**
-	 * @param key
-	 * @return the region value
+	 * @param key the entry key
+	 * @return the entry value
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
 	public V get(Object key)
@@ -99,7 +99,7 @@ public class RegionTemplate<K,V>
 
 
 	/**
-	 * @param map
+	 * @param map the map
 	 * @see org.apache.geode.cache.Region#putAll(java.util.Map)
 	 */
 	public void putAll(Map<? extends K, ? extends V> map)
@@ -111,7 +111,7 @@ public class RegionTemplate<K,V>
 
 	/**
 	 * @param map the pull all
-	 * @param aCallbackArgument
+	 * @param aCallbackArgument the call back argument
 	 * @see org.apache.geode.cache.Region#putAll(java.util.Map, java.lang.Object)
 	 */
 	public void putAll(Map<? extends K, ? extends V> map, Object aCallbackArgument)
@@ -134,7 +134,7 @@ public class RegionTemplate<K,V>
 
 	/**
 	 * @param keys the keys to from
-	 * @param aCallbackArgument
+	 * @param aCallbackArgument the call argument
 	 * @see org.apache.geode.cache.Region#removeAll(java.util.Collection, java.lang.Object)
 	 */
 	public void removeAll(Collection<? extends K> keys, Object aCallbackArgument)

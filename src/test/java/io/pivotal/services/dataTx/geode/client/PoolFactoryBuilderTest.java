@@ -1,12 +1,12 @@
 package io.pivotal.services.dataTx.geode.client;
 
 import org.apache.geode.cache.client.PoolFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for PoolFactoryBuilder

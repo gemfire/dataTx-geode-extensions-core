@@ -1,6 +1,6 @@
 package io.pivotal.services.dataTx.geode.operations.stats.visitors;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -11,7 +11,7 @@ import io.pivotal.services.dataTx.geode.operations.stats.statInfo.ResourceType;
 import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatDescriptor;
 import io.pivotal.services.dataTx.geode.operations.stats.statInfo.StatValue;
 import nyla.solutions.core.io.IO;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import static org.mockito.Mockito.*;
 
