@@ -52,7 +52,8 @@ public class StatsToCsvApp
 			if(args.length > 3)
 			{
 				String[] stateNames = Arrays.copyOfRange(args, 2, args.length-1);
-				visitor = new GenericCsvStatsVisitor(csvFile,typeName,stateNames);
+				visitor = new GenericCsvStatsVisitor(csvFile,
+						typeName,stateNames);
 			}
 			else
 				visitor = new GenericCsvStatsVisitor(csvFile,typeName);

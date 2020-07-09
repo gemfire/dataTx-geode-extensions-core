@@ -10,7 +10,7 @@ import java.util.function.Function;
 /**
  * @author Gregory Green
  */
-public class PdxPutPerf<K>
+public class PdxJsonPutPerfRunner<K> implements Runnable
 {
 
     private final JsonGeneratorCreator jsonGeneratorCreator;
@@ -18,7 +18,10 @@ public class PdxPutPerf<K>
     private final Converter<String, PdxInstance> converter;
     private final Function<PdxInstance,K > getIdFunc;
 
-    public PdxPutPerf(JsonGeneratorCreator jsonGeneratorCreator, Converter<String, PdxInstance> converter, Region<K,PdxInstance> region, Function<PdxInstance,K > getIdFunc)
+    public PdxJsonPutPerfRunner(JsonGeneratorCreator jsonGeneratorCreator,
+                                Converter<String, PdxInstance> converter,
+                                Region<K,PdxInstance> region,
+                                Function<PdxInstance,K > getIdFunc)
     {
         this.jsonGeneratorCreator = jsonGeneratorCreator;
         this.converter = converter;

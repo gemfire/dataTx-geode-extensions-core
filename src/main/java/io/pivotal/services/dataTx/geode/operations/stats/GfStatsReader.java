@@ -954,16 +954,16 @@ public class GfStatsReader
 
 			visitor.visitResourceInsts(resourceInstTable);
 
-			if(resourceTypeTable != null)
-			{
-				for (ResourceType aResourceTypeTable : resourceTypeTable)
-				{
-					if (aResourceTypeTable != null)
-					{
-						visitor.visitResourceType(aResourceTypeTable);
-					}
-				}
-			}
+//			if(resourceTypeTable != null)
+//			{
+//				for (ResourceType aResourceTypeTable : resourceTypeTable)
+//				{
+//					if (aResourceTypeTable != null)
+//					{
+//						visitor.visitResourceType(aResourceTypeTable);
+//					}
+//				}
+//			}
 
 			visitor.visitTimeStampSeries(timeSeries);
 
@@ -1070,4 +1070,8 @@ public class GfStatsReader
 		}
 	}
 
+	public File getArchiveFile()
+	{
+		return this.archive;
+	}
 }
