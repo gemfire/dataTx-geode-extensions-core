@@ -17,7 +17,7 @@ import org.junit.jupiter.api.*;
 
 import static org.mockito.Mockito.*;
 
-public class GenericCsvStatsVisitorTest
+public class CsvStatsVisitorTest
 {
 
 	@Test
@@ -32,7 +32,7 @@ public class GenericCsvStatsVisitorTest
 				statsFile.getParent());
 		IO.ops(statsFile).deleteDirectoryFiles();
 
-		GenericCsvStatsVisitor subject = new GenericCsvStatsVisitor(statsFile);
+		CsvStatsVisitor subject = new CsvStatsVisitor(statsFile);
 		File actual = subject.toFile(statsFile,null);
 		assertEquals(statsFile.getName()+".csv",actual.getName());
 	}
@@ -57,7 +57,7 @@ public class GenericCsvStatsVisitorTest
 
 		csvFile.mkdirs();
 		
-		GenericCsvStatsVisitor subject = new GenericCsvStatsVisitor(csvFile);
+		CsvStatsVisitor subject = new CsvStatsVisitor(csvFile);
 		
 		StatValue stat1 = mock(StatValue.class);
 		StatDescriptor stat1Descriptor = mock(StatDescriptor.class);
@@ -120,7 +120,7 @@ public class GenericCsvStatsVisitorTest
 		Path expectedPath1 = Paths.get("target/csv/1");
 		expectedPath1.toFile().mkdirs();
 
-		GenericCsvStatsVisitor subject = new GenericCsvStatsVisitor(
+		CsvStatsVisitor subject = new CsvStatsVisitor(
 				expectedPath1.toFile());
 
 		File file = subject.toFile(expectedPath1.toFile(),mockResourceInst);
@@ -151,7 +151,7 @@ public class GenericCsvStatsVisitorTest
 		Path expectedPath1 = Paths.get("target/csv/file.csv");
 		expectedPath1.getParent().toFile().mkdirs();
 
-		GenericCsvStatsVisitor subject = new GenericCsvStatsVisitor(
+		CsvStatsVisitor subject = new CsvStatsVisitor(
 				expectedPath1.toFile());
 
 		File file = subject.toFile(expectedPath1.toFile(),mockResourceInst);
@@ -178,9 +178,9 @@ public class GenericCsvStatsVisitorTest
 		GfStatsReader statsReader = new GfStatsReader(statFile);
 
 
-		GenericCsvStatsVisitor v1 = new GenericCsvStatsVisitor(
+		CsvStatsVisitor v1 = new CsvStatsVisitor(
 				expectedPath1.toFile());
-		GenericCsvStatsVisitor v2 = new GenericCsvStatsVisitor(
+		CsvStatsVisitor v2 = new CsvStatsVisitor(
 				expectedPath2.toFile());
 
 		statsReader.acceptVisitors(v1, v2);

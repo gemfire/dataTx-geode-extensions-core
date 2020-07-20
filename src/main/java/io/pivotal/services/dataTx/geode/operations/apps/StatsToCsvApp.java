@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import io.pivotal.services.dataTx.geode.operations.stats.GfStatsReader;
-import io.pivotal.services.dataTx.geode.operations.stats.visitors.GenericCsvStatsVisitor;
+import io.pivotal.services.dataTx.geode.operations.stats.visitors.CsvStatsVisitor;
 
 public class StatsToCsvApp
 {
@@ -47,16 +47,16 @@ public class StatsToCsvApp
 		
 			csvFile = Paths.get(args[2]).toFile();
 			
-			GenericCsvStatsVisitor visitor = null;
+			CsvStatsVisitor visitor = null;
 			
 			if(args.length > 3)
 			{
 				String[] stateNames = Arrays.copyOfRange(args, 2, args.length-1);
-				visitor = new GenericCsvStatsVisitor(csvFile,
+				visitor = new CsvStatsVisitor(csvFile,
 						typeName,stateNames);
 			}
 			else
-				visitor = new GenericCsvStatsVisitor(csvFile,typeName);
+				visitor = new CsvStatsVisitor(csvFile,typeName);
 			
 			System.out.println("accepting");
 			GfStatsReader reader = new GfStatsReader(archiveFile.getAbsolutePath());

@@ -20,19 +20,19 @@ import java.util.List;
  *
  * @author Gregory Green
  */
-public class GenericCsvStatsVisitor implements StatsVisitor
+public class CsvStatsVisitor implements StatsVisitor
 {
 	private static final String NAME_PART_SEPARATOR = "-";
     private final String typeName;
     private String[] statNames = null;
     private final File csvDirOrFile;
 
-    public GenericCsvStatsVisitor(File csvDirOrFile)
+    public CsvStatsVisitor(File csvDirOrFile)
     {
         this(csvDirOrFile, null);
     }
 
-    public GenericCsvStatsVisitor(File csvDirOrFile, String typeName, String... statNames)
+    public CsvStatsVisitor(File csvDirOrFile, String typeName, String... statNames)
     {
 
 

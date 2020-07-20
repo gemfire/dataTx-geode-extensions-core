@@ -47,7 +47,7 @@ import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 
 import io.pivotal.services.dataTx.geode.operations.stats.statInfo.*;
-import io.pivotal.services.dataTx.geode.operations.stats.visitors.GenericCsvStatsVisitor;
+import io.pivotal.services.dataTx.geode.operations.stats.visitors.CsvStatsVisitor;
 import io.pivotal.services.dataTx.geode.operations.stats.visitors.StatsVisitor;
 import nyla.solutions.core.io.IO;
 
@@ -317,7 +317,7 @@ public class GfStatsReader
 	
 	public void dumpCsvFiles()
 	{
-		GenericCsvStatsVisitor visitor = new GenericCsvStatsVisitor(this.archive);
+		CsvStatsVisitor visitor = new CsvStatsVisitor(this.archive);
 		this.acceptVisitors(visitor);
 	}
 	/**
@@ -1048,15 +1048,15 @@ public class GfStatsReader
 		
 			csvFile = Paths.get(args[2]).toFile();
 			
-			GenericCsvStatsVisitor visitor = null;
+			CsvStatsVisitor visitor = null;
 			
 			if(args.length > 3)
 			{
 				String[] stateNames = Arrays.copyOfRange(args, 2, args.length-1);
-				visitor = new GenericCsvStatsVisitor(csvFile,typeName,stateNames);
+				visitor = new CsvStatsVisitor(csvFile,typeName,stateNames);
 			}
 			else
-				visitor = new GenericCsvStatsVisitor(csvFile,typeName);
+				visitor = new CsvStatsVisitor(csvFile,typeName);
 			
 			System.out.println("accepting");
 			GfStatsReader reader = new GfStatsReader(archiveFile.getAbsolutePath());
