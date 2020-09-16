@@ -22,11 +22,11 @@ public class GeodePagination
 	 * @param pageRegion the page region
 	 * @return the collection
 	 */
-	public Collection<?> readKeys(String id, int pageNumber ,Region<String,Collection<?>> pageRegion)
+	public <K> Collection<K> readKeys(String id, int pageNumber ,Region<String,Collection<?>> pageRegion)
 	{
 		String pageKey = toPageKey(id, pageNumber);
 		
-		return pageRegion.get(pageKey);
+		return (Collection)pageRegion.get(pageKey);
 	}// --------------------------------------------------------------
 	
 	
@@ -45,7 +45,6 @@ public class GeodePagination
 			Region<String, Collection<K>> pageKeysRegion,
 			List<Map.Entry<K, V>> results)
 	{
-		
 		if(results == null || results.isEmpty())
 			return null;
 		

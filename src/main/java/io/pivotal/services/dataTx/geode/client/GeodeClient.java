@@ -1,43 +1,10 @@
 package io.pivotal.services.dataTx.geode.client;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.function.Consumer;
-
-import org.apache.geode.cache.CacheClosedException;
-import org.apache.geode.cache.CacheListener;
-import org.apache.geode.cache.EntryEvent;
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.ClientCacheFactory;
-import org.apache.geode.cache.client.ClientRegionFactory;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-import org.apache.geode.cache.execute.Execution;
-import org.apache.geode.cache.execute.FunctionService;
-import org.apache.geode.cache.execute.RegionFunctionContext;
-import org.apache.geode.cache.query.CqAttributes;
-import org.apache.geode.cache.query.CqAttributesFactory;
-import org.apache.geode.cache.query.CqClosedException;
-import org.apache.geode.cache.query.CqException;
-import org.apache.geode.cache.query.CqExistsException;
-import org.apache.geode.cache.query.CqQuery;
-import org.apache.geode.cache.query.QueryInvalidException;
-import org.apache.geode.cache.query.QueryService;
-import org.apache.geode.cache.query.RegionNotFoundException;
-import org.apache.geode.pdx.PdxSerializer;
-
 import io.pivotal.services.dataTx.geode.client.cq.CqQueueListener;
 import io.pivotal.services.dataTx.geode.io.GemFireIO;
-import io.pivotal.services.dataTx.geode.io.Querier;
 import io.pivotal.services.dataTx.geode.io.QuerierMgr;
 import io.pivotal.services.dataTx.geode.io.QuerierService;
+import io.pivotal.services.dataTx.geode.io.function.FuncExe;
 import io.pivotal.services.dataTx.geode.listeners.CacheListenerBridge;
 import io.pivotal.services.dataTx.geode.lucene.GeodeLuceneSearch;
 import io.pivotal.services.dataTx.geode.lucene.TextPageCriteria;
@@ -50,6 +17,21 @@ import nyla.solutions.core.operations.ClassPath;
 import nyla.solutions.core.patterns.iteration.Paging;
 import nyla.solutions.core.util.Config;
 import nyla.solutions.core.util.Debugger;
+import org.apache.geode.cache.*;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.execute.RegionFunctionContext;
+import org.apache.geode.cache.query.*;
+import org.apache.geode.pdx.PdxSerializer;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.function.Consumer;
 
 
 
@@ -82,8 +64,30 @@ public class GeodeClient
 	private final ClientRegionFactory<?, ?> cachingRegionfactory;
 	private static GeodeClient geodeClient = null;
 	private Map<String,CacheListenerBridge<?, ?>> listenerMap = new Hashtable<>();
+	private final QuerierService querier;
 
-
+	/**
+	 *
+	 * @param clientCache the connection
+	 */
+	protected GeodeClient(ClientCache clientCache)
+	{
+		this(clientCache,
+				clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY),
+				clientCache.createClientRegionFactory(ClientRegionShortcut.CACHING_PROXY_HEAP_LRU),
+				new QuerierMgr()
+		);
+	}//------------------------------------------------
+	protected GeodeClient(ClientCache clientCache,  ClientRegionFactory<?, ?> proxyRegionfactory,
+						  ClientRegionFactory<?, ?> cachingProxyRegionfactory, QuerierService querier
+	)
+	{
+		cachingProxy = false;
+		this.clientCache = clientCache;
+		this.proxyRegionfactory = proxyRegionfactory;
+		this.cachingRegionfactory = cachingProxyRegionfactory;
+		this.querier = querier;
+	}//------------------------------------------------
 	protected GeodeClient(boolean cachingProxy, String... classPatterns)
 	{
 		this.cachingProxy = cachingProxy;
@@ -143,6 +147,8 @@ public class GeodeClient
 			//Caching Proxy
 			cachingRegionfactory = clientCache.createClientRegionFactory(ClientRegionShortcut.CACHING_PROXY);
 			proxyRegionfactory = clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY);
+
+			this.querier = new QuerierMgr();
 		
 	}//------------------------------------------------
 	/**
@@ -150,17 +156,15 @@ public class GeodeClient
 	 * @param props the security properties
 	 * @throws IOException when IOexception occurs
 	 */
-	protected static void constructSecurity(Properties props) throws IOException
+	protected void constructSecurity(Properties props) throws IOException
 	{
 		props.setProperty("security-client-auth-init", GeodeConfigAuthInitialize.class.getName()+".create");
 		
 		//write to file
 		File sslFile = saveEnvFile(GeodeConfigConstants.SSL_KEYSTORE_CLASSPATH_FILE_PROP);
 		
-
 		System.out.println("sslFile:"+sslFile);
-		
-		
+
 		File sslTrustStoreFile = saveEnvFile(GeodeConfigConstants.SSL_TRUSTSTORE_CLASSPATH_FILE_PROP);
 		String sslTrustStoreFilePath = "";
 		if(sslTrustStoreFile != null)
@@ -179,8 +183,9 @@ public class GeodeClient
 		props.setProperty("ssl-enabled-components", Config.getPropertyEnv("ssl-enabled-components",""));
 		
 	}//------------------------------------------------
+
 	/**
-	 * 
+	 *
 	 * @param configPropFilePath the property name with the file path
 	 * @return the saved File
 	 * @throws IOException when there is an issue with saving the file
@@ -189,18 +194,18 @@ public class GeodeClient
 	throws IOException
 	{
 		String sslKeystorePath = Config.getProperty(configPropFilePath,"");
-		
+
 		String fileName = Paths.get(sslKeystorePath).toFile().getName();
-		
+
 		if(sslKeystorePath.length() == 0)
 			return null;
-		
+
 		byte[] bytes = IO.readBinaryClassPath(sslKeystorePath);
-		
-		
+
+
 		String sslDirectory = Config.getProperty(GeodeConfigConstants.SSL_KEYSTORE_STORE_DIR_PROP,".");
 		File sslDirectoryFile = Paths.get(sslDirectory).toFile();
-		
+
 		if(!sslDirectoryFile.exists())
 		{
 			throw new ConfigException("Configuration property "+GeodeConfigConstants.SSL_KEYSTORE_STORE_DIR_PROP+" "+sslDirectoryFile+" but it does not exist");
@@ -211,25 +216,25 @@ public class GeodeClient
 		}
 
 		File sslFile = Paths.get(sslDirectoryFile+IO.fileSperator()+fileName).toFile();
-		
+
 		IO.writeFile(sslFile, bytes);
-		
+
 		return sslFile;
 	}//------------------------------------------------
-	
+
 	public <ReturnType> Collection<ReturnType>  select(String oql)
 	{
 		return select(oql,null);
 	}//------------------------------------------------
-	
-	static PdxSerializer createPdxSerializer(String pdxSerializerClassNm, String... classPatterns )
+	PdxSerializer createPdxSerializer(String pdxSerializerClassNm, String... classPatterns )
 	{
 		
 		Object [] initArgs = {classPatterns};
 		return ClassPath.newInstance(pdxSerializerClassNm, initArgs);
 	}
+
 	//------------------------------------------------
-	
+
 	/**
 	 * @param <K> the key class
 	 * @param <V> the value class
@@ -238,81 +243,72 @@ public class GeodeClient
 	 * @param filter the filter set
 	 * @return collection of results
 	 */
-	
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	public <K,V> Paging<V>  searchText(TextPageCriteria criteria, Region<K,V> region, Set<K> filter)
+	{
+		return searchText(criteria,region,filter,FuncExe.onRegion(region));
+	}
+
+	public <K,V> Paging<V>  searchText(TextPageCriteria criteria, Region<K,V> region, Set<K> filter, FuncExe funcExe)
 	{
 		try
 		{
-			
-			LuceneSearchFunction func = new LuceneSearchFunction();
-			
-			
-			Execution<Object,Object,Object> exe = FunctionService.onRegion(region).withFilter(filter);
-			
-			Paging<V> paging = (Paging)GemFireIO.exeWithResults(exe, func);
-			
-			
+			LuceneSearchFunction<V> func = new LuceneSearchFunction();
+
+			Paging<V> paging = (Paging)GemFireIO.exeWithResults(
+					funcExe
+							.withFilter(filter)
+							.getExecution(), func);
+
 			return paging;
+		}
+		catch (RuntimeException e)
+		{
+			throw e;
 		}
 		catch (Exception e)
 		{
 			throw new SystemException(e);
-		}		
+		}
 	}
-	
-	
+
 	public <ReturnType> Collection<ReturnType> select(String oql, RegionFunctionContext rfc)
 	{
-		return  Querier.query(oql, rfc);
-	}//------------------------------------------------
-	/**
-	 * 
-	 * @param clientCache the connection
-	 */
-	protected GeodeClient(ClientCache clientCache)
-	{
-		this(clientCache,
-		clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY),
-		clientCache.createClientRegionFactory(ClientRegionShortcut.CACHING_PROXY_HEAP_LRU)
-		);
+		return  querier.query(oql, rfc);
 	}//------------------------------------------------
 
-	protected GeodeClient(ClientCache clientCache,  ClientRegionFactory<?, ?> proxyRegionfactory,
-	 ClientRegionFactory<?, ?> cachingRegionfactory
-	)
-	{
-		cachingProxy = false;
-		this.clientCache = clientCache;
-		this.proxyRegionfactory = proxyRegionfactory;
-		this.cachingRegionfactory = cachingRegionfactory;
-	}//------------------------------------------------
+
 	/**
-	 * 
+	 *
 	 * @param criteria the search criteria
 	 * @return the collection keys in the page region
 	 * @throws Exception when an unknow exception occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<String> searchWithPageKeys(TextPageCriteria criteria)
+			throws Exception
+	{
+		if(criteria == null)
+			return null;
+
+		return searchWithPageKeys(criteria,FuncExe.onRegion(getRegion(criteria.getRegionName())));
+	}
+
+	public Collection<String> searchWithPageKeys(TextPageCriteria criteria, FuncExe funcExe)
 	throws Exception
 	{
 		if(criteria == null)
 			return null;
-		
-		Region<?,?> region = this.getRegion(criteria.getRegionName());
-		
-		Execution<?,?,?> exe = FunctionService.onRegion(region).setArguments(criteria);
-		
+
+
 		if(criteria.getFilter() != null)
 		{
-			exe = exe.withFilter(criteria.getFilter());
+			funcExe.withFilter(criteria.getFilter());
 		}
-		
-	    return GemFireIO.exeWithResults(exe, new LuceneSearchFunction<Object>());
-	    
+
+	    return funcExe.exe(new LuceneSearchFunction<Object>());
+
 	}//------------------------------------------------
-	
+
 	public <K,V> Map<K,V> readSearchResultsByPage(TextPageCriteria criteria, int pageNumber)
 	{
 		GeodeLuceneSearch search = new GeodeLuceneSearch(this.clientCache);
@@ -335,8 +331,7 @@ public class GeodeClient
 	 */
 	public QuerierService getQuerierService()
 	{
-		connect();
-		return new QuerierMgr();
+		return querier;
 	}//------------------------------------------------
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private <K,V> Region<K,V> createRegion(String regionName)
@@ -357,7 +352,7 @@ public class GeodeClient
 			else
 				listenerRegionFactory = this.clientCache.createClientRegionFactory(ClientRegionShortcut.PROXY);
 			
-			listenerRegionFactory.addCacheListener((CacheListener)listener);
+			listenerRegionFactory.addCacheListener(listener);
 			
 			Region<K,V> region = listenerRegionFactory.create(regionName);
 			
@@ -391,7 +386,7 @@ public class GeodeClient
 		if(region != null )
 			return (Region<K,V>)region;
 		
-		region = (Region<K,V>)this.createRegion(regionName);
+		region = this.createRegion(regionName);
 		
 		//Client side data policy is typically NORMAL or EMPTY
 		if(cachingProxy)
@@ -417,10 +412,10 @@ public class GeodeClient
 		if(regionName == null || regionName.length() == 0)
 			return null;
 		
-		Region<K,V> region = (Region<K,V>)clientCache.getRegion(regionName);
+		Region<K,V> region = clientCache.getRegion(regionName);
 		
 		if(region != null )
-			return (Region<K,V>)region;
+			return region;
 		
 		region = (Region<K,V>)clientCache
 		.createClientRegionFactory(ClientRegionShortcut.PROXY).create(regionName);
@@ -446,7 +441,7 @@ public class GeodeClient
 		Region<K,V> region = (Region<K,V>)clientCache.getRegion(regionName);
 		
 		if(region != null )
-			return (Region<K,V>)region;
+			return region;
 		
 		region = (Region<K,V>)clientCache
 		.createClientRegionFactory(ClientRegionShortcut.PROXY).setPoolName(poolName).create(regionName);
@@ -499,7 +494,7 @@ public class GeodeClient
 		if(geodeClient != null)
 			return geodeClient;
 		
-		boolean cachingProxy = Config.getPropertyBoolean(GeodeConfigConstants.USE_CACHING_PROXY_PROP,false).booleanValue();
+		boolean cachingProxy = Config.getPropertyBoolean(GeodeConfigConstants.USE_CACHING_PROXY_PROP,false);
 		
 		geodeClient = new GeodeClient(cachingProxy,
 		Config.getProperty(GeodeConfigConstants.PDX_CLASS_PATTERN_PROP,".*"));
@@ -541,7 +536,7 @@ public class GeodeClient
 		CacheListenerBridge<K, V> listener = (CacheListenerBridge)this.listenerMap.get(regionName);
 		if(listener == null)
 		{
-			Region<K,V> region = (Region<K,V>)clientCache.getRegion(regionName);
+			Region<K,V> region = clientCache.getRegion(regionName);
 			
 			if(region != null )
 				throw new IllegalStateException("Cannot register a listener when the region already created. Try registering the listener first. Then use GeodeClient.getRegion for regionName:"+regionName);
@@ -571,7 +566,7 @@ public class GeodeClient
 		CacheListenerBridge<K, V> listener = (CacheListenerBridge)this.listenerMap.get(regionName);
 		if(listener == null)
 		{
-			Region<K,V> region = (Region<K,V>)clientCache.getRegion(regionName);
+			Region<K,V> region = clientCache.getRegion(regionName);
 			
 			if(region != null )
 				throw new IllegalStateException("Cannot register a listener when the region already created. Try registering the listener first. Then use GeodeClient.getRegion for regionName:"+regionName);
@@ -584,8 +579,17 @@ public class GeodeClient
 		}
 		
 	}
-	
-	
 
-	
+
+	public <K,V> Region<K, V> getRegion(String regionName, CacheLoader<K, V> loader)
+	{
+		Region<K,V> region = this.getRegion(regionName);
+		registerCacheLoader(region,loader);
+		return region;
+	}
+
+	public static <K, V> void registerCacheLoader(Region<K, V> region,CacheLoader<K, V> loader)
+	{
+		region.getAttributesMutator().setCacheLoader(loader);
+	}
 }

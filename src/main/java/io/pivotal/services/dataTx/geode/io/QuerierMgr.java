@@ -19,7 +19,6 @@ public class QuerierMgr implements QuerierService
 	{
 		try
 		{
-			// TODO Auto-generated method stub
 			return Querier.query(query, rfc, params);
 		}
 		catch(RuntimeException e)

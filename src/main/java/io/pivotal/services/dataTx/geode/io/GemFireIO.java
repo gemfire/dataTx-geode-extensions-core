@@ -79,7 +79,7 @@ public final class GemFireIO
 		Collection<Object> collectionResults = (Collection<Object>)resultsObject;
 			
 		//if empty return null
-		if(collectionResults.isEmpty())
+		if(collectionResults == null ||  collectionResults.isEmpty())
 			return null;
 		
 		Collection<Object> list = new ArrayList<Object>(collectionResults.size());
