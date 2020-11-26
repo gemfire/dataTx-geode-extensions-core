@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.pivotal.services.dataTx</groupId>
 	<artifactId>dataTx-geode-extensions-core</artifactId>
-	<version>2.3.0</version>
+	<version>2.4.0</version>
 	<name>dataTx-geode-extensions-core</name>
 	<description>Apache Geode/GemFire extensions - common development extensions powered by Apache Geode</description>
 	<properties>
@@ -11,7 +11,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.javadoc.skip>false</maven.javadoc.skip>
-		<geode.version>1.7.0</geode.version>
+		<geode.version>1.10.0</geode.version>
 		<jacoco.method.coverage>0.0</jacoco.method.coverage>	
 		<findbugs.skip>true</findbugs.skip>
 		<junit.jupiter.version>5.6.2</junit.jupiter.version>

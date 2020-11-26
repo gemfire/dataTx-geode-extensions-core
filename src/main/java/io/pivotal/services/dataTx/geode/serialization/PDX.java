@@ -1,6 +1,5 @@
 package io.pivotal.services.dataTx.geode.serialization;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.geode.pdx.JSONFormatter;
 import org.apache.geode.pdx.JSONFormatterException;
@@ -20,12 +19,12 @@ public class PDX
 	 */
 	public static final String JSON_TYPE_ATTRIBUTE = "@type";
 
-	public static String toJsonFromNondPdxObject(Object obj)
+	public  String toJsonFromNonPdxObject(Object obj)
 	{
 		return new ToJsonFromNonPdxObject().convert(obj);
 	}
 
-	public static String toJSON(PdxInstance pdxInstance, String className)
+	public  String toJSON(PdxInstance pdxInstance, String className)
 	{
 
 		String json = JSONFormatter.toJSON(pdxInstance);
@@ -33,21 +32,30 @@ public class PDX
 		return addTypeToJson(json, className);
 
 	}//-------------------------------------------
-	static String addTypeToJson(String json, String type)
+	public String addTypeToJson(String json, String type)
 	{
+		if(json ==null)
+			return null;
+
 		if(json.contains(JSON_TYPE_ATTRIBUTE))
 			return json;
 
-		String prefix = new StringBuilder().append("{\"")
+		if(json.trim().length() ==0)
+			return null;
+
+		StringBuilder prefix = new StringBuilder().append("{\"")
 				.append(PDX.JSON_TYPE_ATTRIBUTE)
 				.append("\":\"")
-				.append(type)
-				.append("\", ").toString();
+				.append(type).append("\"");
 
-		json = json.replaceFirst("\\{",prefix);
+		if(json.indexOf(":") > 0 ||
+				json.indexOf("[") > 0)
+				prefix.append(",").toString();
+
+		json = json.replaceFirst("\\{",prefix.toString());
 		return json;
 	}//-------------------------------------------
-	public static PdxInstance fromJSON(String json)
+	public  PdxInstance fromJSON(String json)
 	{
 		try{
 
@@ -73,7 +81,7 @@ public class PDX
 		}
 	}//-------------------------------------------
 
-	public static void validateJson(String json)
+	public  void validateJson(String json)
 	{
 		if(!json.contains(JSON_TYPE_ATTRIBUTE))
 			throw new IllegalArgumentException("Expected JSON to contain attribute:" + JSON_TYPE_ATTRIBUTE);
@@ -90,7 +98,7 @@ public class PDX
 
 	}
 
-	public static SerializationPdxEntryWrapper toSerializePdxEntryWrapperFromJson(String json)
+	public  SerializationPdxEntryWrapper toSerializePdxEntryWrapperFromJson(String json)
 	{
 		try
 		{
@@ -115,12 +123,12 @@ public class PDX
 	 * @param valueClassName the value class name
 	 * @return the wrapper object
 	 */
-	public static <Key extends Serializable> SerializationPdxEntryWrapper toSerializePdxEntryWrapper(Key key, String valueClassName, PdxInstance pdxInstance)
+	public  <Key extends Serializable> SerializationPdxEntryWrapper toSerializePdxEntryWrapper(Key key, String valueClassName, PdxInstance pdxInstance)
 	{
 		return new SerializationPdxEntryWrapper(key,valueClassName,pdxInstance);
 	}
 
-	public static PdxInstance fromObject(Object obj)
+	public  PdxInstance fromObject(Object obj)
 	{
 		if(obj instanceof PdxInstance)
 			return (PdxInstance)obj;
@@ -129,7 +137,7 @@ public class PDX
 		try
 		{
 
-			String json = toJsonFromNondPdxObject(obj);
+			String json = toJsonFromNonPdxObject(obj);
 
 			return JSONFormatter.fromJSON(json);
 

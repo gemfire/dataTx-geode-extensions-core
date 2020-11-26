@@ -18,10 +18,16 @@ public class SerializationPdxEntryWrapper<Key extends Serializable>
     private String valueClassName;
     private String keyString; //
     private String valueJson;
+    private final PDX pdx;
 
+    public SerializationPdxEntryWrapper(PDX pdx)
+    {
+        this.pdx = pdx;
+    }
 
     public SerializationPdxEntryWrapper()
     {
+        pdx = new PDX();
     }
     protected SerializationPdxEntryWrapper(Key key,String valueClassName, PdxInstance pdxInstance)
     {
@@ -31,11 +37,12 @@ public class SerializationPdxEntryWrapper<Key extends Serializable>
         if(isCustom(key))
             throw new InvalidSerializationKeyException(key);
 
+        this.pdx = new PDX();
         this.keyClassName = key.getClass().getName();
 
         this.valueClassName = valueClassName;
 
-        this.valueJson = PDX.toJSON(pdxInstance,this.valueClassName);
+        this.valueJson = pdx.toJSON(pdxInstance,this.valueClassName);
         this.keyString = key.toString();
 
     }
@@ -57,7 +64,7 @@ public class SerializationPdxEntryWrapper<Key extends Serializable>
     public void setValueJson(String valueJson)
     {
         if(valueJson != null && valueJson.length() > 0)
-            PDX.validateJson(valueJson);
+            pdx.validateJson(valueJson);
 
         this.valueJson = valueJson;
     }//-------------------------------------------
@@ -90,7 +97,7 @@ public class SerializationPdxEntryWrapper<Key extends Serializable>
 
     public PdxInstance toPdxInstance()
     {
-        return PDX.fromJSON(this.valueJson);
+        return pdx.fromJSON(this.valueJson);
     }//-------------------------------------------
 
     @Override
