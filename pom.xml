@@ -11,7 +11,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.javadoc.skip>false</maven.javadoc.skip>
-		<geode.version>1.10.0</geode.version>
+		<geode.version>1.15.0</geode.version>
 		<jacoco.method.coverage>0.0</jacoco.method.coverage>	
 		<findbugs.skip>true</findbugs.skip>
 		<junit.jupiter.version>5.6.2</junit.jupiter.version>
